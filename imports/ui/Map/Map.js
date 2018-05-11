@@ -6,6 +6,7 @@ import {
   withScriptjs,
   Marker
 } from 'react-google-maps';
+import ShipIcon from './ShipIcon';
 
 const defaultLoc = { lat: 48.9067221, lng: 2.2622592 };
 
@@ -16,7 +17,7 @@ const Map = withScriptjs(withGoogleMap((props) =>
     center={props.markerPos || defaultLoc}
   >
     {props.markerPos &&
-      <Marker position={props.markerPos} />
+      <Marker options={{ icon: ShipIcon }} position={props.markerPos} />
     }
   </GoogleMap>
 ));
