@@ -17,7 +17,7 @@ Meteor.methods({
             params: {
               name: mmsi,
               what: 'loc',
-              apikey: '109676.BrVSr9i6TpbMbBe',
+              apikey: Meteor.settings.aprsfi_key,
               format: 'json'
             }
           },

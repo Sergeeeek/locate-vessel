@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 
+const getSuggestionValue = (suggestion) => suggestion.Name;
+
 const Suggestion = (suggestion, { query, isHighlighted }) => {
   const name = getSuggestionValue(suggestion);
   const highlightTextIdx = name.toLowerCase().indexOf(query.toLowerCase());
@@ -22,8 +24,6 @@ const Suggestion = (suggestion, { query, isHighlighted }) => {
     </div>;
   }
 };
-
-const getSuggestionValue = (suggestion) => suggestion.Name;
 
 class SearchInput extends Component {
   constructor(props) {

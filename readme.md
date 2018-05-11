@@ -8,5 +8,5 @@ This is a test challenge for an interview.
 git clone https://github.com/Sergeeeek/locate-vessel.git
 cd locate-vessel
 meteor npm install
-meteor
+meteor --settings settings.json
 ```
