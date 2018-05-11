@@ -3,9 +3,9 @@ import { withTracker } from 'meteor/react-meteor-data';
 import { Vessels } from '/imports/api/vessels/api';
 import Search from './Search';
 
-const SearchWithTracker = withTracker(({ value }) => ({
+const SearchWithTracker = withTracker(({ query }) => ({
   suggestions: Vessels.find({
-    Name: { $regex: value, $options: 'i' }
+    Name: { $regex: query, $options: 'i' }
   }).fetch()
 }))(Search);
 
@@ -14,15 +14,20 @@ class SearchContainer extends Component {
     super(props);
 
     this.state = {
-      value: ''
+      query: ''
     };
 
     this.onSearchChange = this.onSearchChange.bind(this);
+    this.onSearchClear = this.onSearchClear.bind(this);
     this.onSelected = this.onSelected.bind(this);
   }
 
-  onSearchChange(_, change) {
-    this.setState({ value: change.newValue });
+  onSearchChange({ value }) {
+    this.setState({ query: value });
+  }
+
+  onSearchClear() {
+    this.setState({ query: '' });
   }
 
   onSelected(event, { suggestion }) {
@@ -33,11 +38,10 @@ class SearchContainer extends Component {
 
   render() {
     return <SearchWithTracker
-      onSuggestFetch={() => undefined}
-      onSuggestClear={() => undefined}
+      onSuggestFetch={this.onSearchChange}
+      onSuggestClear={this.onSearchClear}
       onSelected={this.onSelected}
-      onChange={this.onSearchChange}
-      value={this.state.value}
+      query={this.state.query}
     />;
   }
 }

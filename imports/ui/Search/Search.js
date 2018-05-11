@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 
 const Suggestion = (suggestion, { query, isHighlighted }) => {
@@ -25,29 +25,48 @@ const Suggestion = (suggestion, { query, isHighlighted }) => {
 
 const getSuggestionValue = (suggestion) => suggestion.Name;
 
-const SearchInput = (props) => {
-  const {
-    onSuggestFetch,
-    onSuggestClear,
-    onSelected,
-    suggestions,
-    ...input
-  } = props;
-  return <Autosuggest
-    onSuggestionsFetchRequested={onSuggestFetch}
-    onSuggestionsClearRequested={onSuggestClear}
-    onSuggestionSelected={onSelected}
-    suggestions={suggestions || []}
-    inputProps={input}
-    renderSuggestion={Suggestion}
-    getSuggestionValue={getSuggestionValue}
-    theme={{
-      container: 'search',
-      input: 'search__input',
-      suggestionsContainer: 'search__suggestion-container',
-      suggestionsList: 'search__sueggestion-list'
-    }}
-  />;
-};
+class SearchInput extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: ''
+    };
+
+    this.onChange = this.onChange.bind(this);
+  }
+
+  onChange(_, change) {
+    this.setState({ value: change.newValue });
+  }
+
+  render() {
+    const {
+      onSuggestFetch,
+      onSuggestClear,
+      onSelected,
+      suggestions
+    } = this.props;
+
+    return <Autosuggest
+      onSuggestionsFetchRequested={onSuggestFetch}
+      onSuggestionsClearRequested={onSuggestClear}
+      onSuggestionSelected={onSelected}
+      suggestions={suggestions || []}
+      renderSuggestion={Suggestion}
+      getSuggestionValue={getSuggestionValue}
+      inputProps={{
+        value: this.state.value,
+        onChange: this.onChange
+      }}
+      theme={{
+        container: 'search',
+        input: 'search__input',
+        suggestionsContainer: 'search__suggestion-container',
+        suggestionsList: 'search__sueggestion-list'
+      }}
+    />;
+  }
+}
 
 export default SearchInput;
