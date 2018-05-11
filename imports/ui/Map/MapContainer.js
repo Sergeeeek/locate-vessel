@@ -17,6 +17,8 @@ class MapContainer extends Component {
   }
 
   updateLocation() {
+    this.setState({ lastError: '' });
+
     if (!this.props.ship) return;
 
     this.setState({ updating: true, currentRetryTimeout: 0 });
@@ -41,8 +43,6 @@ class MapContainer extends Component {
             lng: parseFloat(resp.lng)
           }
         });
-
-        console.log(resp);
       }
     );
   }
@@ -58,7 +58,7 @@ class MapContainer extends Component {
 
   render() {
     return <div>
-      {!this.state.updating &&
+      {!this.state.updating && this.state.lastError &&
         <div className="error-container">{this.state.lastError}</div>
       }
       <Map markerPos={this.state.lastLocation} />
