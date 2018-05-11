@@ -17,11 +17,9 @@ export default class App extends Component {
   }
 
   render() {
-    return (
-      <div className="container">
-        <MapContainer ship={this.state.selectedShip && this.state.selectedShip.MMSI} />
-        <SearchContainer onChange={this.onShipChange} />
-      </div>
-    );
+    return <div className="container">
+      <MapContainer ship={this.state.selectedShip && this.state.selectedShip.MMSI} />
+      <SearchContainer onChange={this.onShipChange} />
+    </div>;
   }
 }

@@ -8,4 +8,4 @@ Meteor.startup(() => {
       Vessels.insert(v);
     });
   }
-})
+});
