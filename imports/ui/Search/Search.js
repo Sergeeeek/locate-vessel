@@ -2,13 +2,14 @@ import React, { PureComponent } from 'react';
 import Autosuggest from 'react-autosuggest';
 
 const Suggestion = (suggestion, { query, isHighlighted }) => {
-  const highlightTextIdx = suggestion.name.indexOf(query);
+  const name = suggestion.Name;
+  const highlightTextIdx = name.toLowerCase().indexOf(query.toLowerCase());
   const suggestionClass = `search__suggestion ${isHighlighted ? 'search__suggestion--selected' : ''}`;
 
   if (highlightTextIdx !== -1) {
-    const beforeHighlight = suggestion.name.slice(0, highlightTextIdx);
-    const highlighted = suggestion.name.slice(highlightTextIdx, highlightTextIdx + query.length);
-    const afterHighlight = suggestion.name.slice(highlightTextIdx + query.length, suggestion.name.length);
+    const beforeHighlight = name.slice(0, highlightTextIdx);
+    const highlighted = name.slice(highlightTextIdx, highlightTextIdx + query.length);
+    const afterHighlight = name.slice(highlightTextIdx + query.length, name.length);
 
     return <div className={suggestionClass}>
       {beforeHighlight}
@@ -17,12 +18,12 @@ const Suggestion = (suggestion, { query, isHighlighted }) => {
     </div>;
   } else {
     return <div className={suggestionClass}>
-      {suggestion.name}
+      {name}
     </div>;
   }
 };
 
-const getSuggestionValue = (suggestion) => suggestion.name;
+const getSuggestionValue = (suggestion) => suggestion.Name;
 
 const SearchInput = (props) => {
   const {
