@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import Autosuggest from 'react-autosuggest';
 
 const Suggestion = (suggestion, { query, isHighlighted }) => {
-  const name = suggestion.Name;
+  const name = getSuggestionValue(suggestion);
   const highlightTextIdx = name.toLowerCase().indexOf(query.toLowerCase());
   const suggestionClass = `search__suggestion ${isHighlighted ? 'search__suggestion--selected' : ''}`;
 
