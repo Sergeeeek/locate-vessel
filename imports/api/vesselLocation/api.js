@@ -4,7 +4,7 @@ import { HTTP } from 'meteor/http';
 
 Meteor.methods({
   async 'vesselLocation.find'(mmsi) {
-    check(mmsi, String);
+    check(mmsi, Number);
     if (this.isSimulation) {
       return;
     }
