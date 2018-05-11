@@ -2,6 +2,8 @@ import { Meteor } from 'meteor/meteor';
 import React, { Component } from 'react';
 import Map from './Map';
 
+const MAX_RETRIES = 5;
+
 class MapContainer extends Component {
   constructor(props) {
     super(props);
@@ -10,16 +12,15 @@ class MapContainer extends Component {
       updating: false,
       lastError: '',
       lastLocation: undefined,
-      currentRetryTimeout: 0
+      currentRetryTimeout: 0,
+      numberOfRetries: 0
     };
 
     this.updateLocation = this.updateLocation.bind(this);
   }
 
   updateLocation() {
-    this.setState({ lastError: '' });
-
-    if (!this.props.ship) return;
+    if (!this.props.ship || this.state.numberOfRetries > MAX_RETRIES) return;
 
     this.setState({ updating: true, currentRetryTimeout: 0 });
     Meteor.call(
@@ -31,7 +32,8 @@ class MapContainer extends Component {
             updating: false,
             lastError: err.reason,
             currentRetryTimeout: setTimeout(this.updateLocation, 2000),
-            lastLocation: undefined
+            lastLocation: undefined,
+            numberOfRetries: this.state.numberOfRetries + 1
           });
         }
 
@@ -41,7 +43,8 @@ class MapContainer extends Component {
           lastLocation: {
             lat: parseFloat(resp.lat),
             lng: parseFloat(resp.lng)
-          }
+          },
+          numberOfRetries: 0,
         });
       }
     );
@@ -52,7 +55,7 @@ class MapContainer extends Component {
       if (this.state.currentRetryTimeout) {
         clearTimeout(this.state.currentRetryTimeout);
       }
-      this.updateLocation();
+      this.setState({ numberOfRetries: 0 }, () => this.updateLocation());
     }
   }
 
@@ -62,7 +65,7 @@ class MapContainer extends Component {
         <div className="error-container">{this.state.lastError}</div>
       }
       <Map markerPos={this.state.lastLocation} />
-    </div>
+    </div>;
   }
 }
 
